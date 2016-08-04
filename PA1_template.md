@@ -55,15 +55,25 @@ and the average number of steps taken, averaged across all days (y-axis)
 avg_steps <- activity %>% 
     group_by(interval) %>% 
     summarize(avg=mean(steps, na.rm=TRUE))
-    
-plot(avg_steps$interval, 
-    avg_steps$avg, type="l", 
-    xlab="Interval", 
-    ylab="Average steps", 
-    main="Average Daily Activity Pattern")
+
+max_val <- filter(avg_steps, avg==max(avg))
+
+ggplot(data=avg_steps, aes(interval, avg)) + geom_line() + 
+    geom_hline(yintercept=max(avg_steps$avg), color="red") + 
+    labs(x="Time Interval", y="Average Steps") + 
+    ggtitle("Average Daily Activity Pattern") +
+    geom_point(data=max_val, aes(x=interval, y=avg), color="magenta", size=5)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
+```r
+#plot(avg_steps$interval, 
+#    avg_steps$avg, type="l", 
+#    xlab="Interval", 
+#    ylab="Average steps", 
+#    main="Average Daily Activity Pattern")
+```
 
 ## Imputing missing values
 
